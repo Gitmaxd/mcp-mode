@@ -1,0 +1,38 @@
+{
+  "name": "claude-mode",
+  "version": "0.1.0",
+  "description": "Progressive MCP integration for Claude Code. Access MCP tools without loading them into context.",
+  "type": "module",
+  "bin": {
+    "cm": "./bin/cm"
+  },
+  "exports": {
+    ".": "./lib/mcp_client.mjs",
+    "./lib/*": "./lib/*.mjs"
+  },
+  "files": [
+    "bin/",
+    "lib/",
+    "examples/",
+    "SKILL.md",
+    "README.md"
+  ],
+  "keywords": [
+    "claude",
+    "claude-code",
+    "mcp",
+    "model-context-protocol",
+    "ai",
+    "llm",
+    "skill"
+  ],
+  "author": "GitMaxd",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/Gitmaxd/claude-mode.git"
+  },
+  "engines": {
+    "node": ">=18.0.0"
+  }
+}
