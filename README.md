@@ -1,245 +1,93 @@
 # Claude Mode
 
-Progressive MCP integration for Claude Code. Access MCP tools without loading them into context.
+Progressive MCP integration for Claude Code. Access MCP tools **without loading them into context**.
 
----
+## The Problem
 
-> **The Problem:** MCP tool schemas are loaded into Claude Code's context window at session startup, consuming 30-50%+ of available tokens BEFORE any conversation begins. Real-world reports show 66,000+ tokens consumed at startup (33% of 200k context).
->
-> **The Solution:** Claude Mode bypasses this entirely by using separate config files (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
->
-> **Result:** Near-zero startup token cost, full context available for actual work.
+MCP tool schemas are loaded into Claude Code's context window at session startup, consuming **30-50%+ of available tokens** before any conversation begins. Real-world reports show 66,000+ tokens consumed at startup (33% of 200k context).
 
----
+## The Solution
+
+Claude Mode bypasses this entirely by using **separate config files** (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
+
+**Result:** Near-zero startup token cost, full context available for actual work.
 
 ## Installation
 
-### Option A - Personal skill (recommended)
-
-Copy this directory to `~/.claude/skills/claude-mode/`
-
 ```bash
-~/.claude/skills/claude-mode/bin/cm --help
-```
+# Initialize in your project
+npx claude-mode init
 
-### Option B - Project skill (for teams)
-
-Copy to `<repo>/.claude/skills/claude-mode/`
-
-```bash
-./.claude/skills/claude-mode/bin/cm --help
-```
-
-### Option C - npm (global install)
-
-```bash
+# Or install globally
 npm install -g claude-mode
-cm --help
+claude-mode init
 ```
 
----
+This creates `.claude/skills/claude-mode/` with the skill files.
 
-## MCP Server Configuration
+## Quick Start
 
-**CRITICAL:** Claude Mode uses **SEPARATE** config files from Claude Code's native configs to avoid context injection.
+```bash
+# 1. Discover MCP servers
+.claude/skills/claude-mode/bin/cm servers
+
+# 2. Index tools from a server
+.claude/skills/claude-mode/bin/cm index --server <name>
+
+# 3. Search for tools
+.claude/skills/claude-mode/bin/cm search "query" --server <name>
+
+# 4. Call a tool directly
+.claude/skills/claude-mode/bin/cm call <tool> --server <name>
+```
+
+## Configuration
+
+**CRITICAL:** Claude Mode uses **SEPARATE** config files from Claude Code's native configs.
 
 | Config | Path | Purpose |
 |--------|------|---------|
-| User config | `~/.claude/mcp.json` | Personal MCP servers for Claude Mode |
-| Project config | `<project>/.claude/mcp.json` | Project-specific MCP servers |
+| User | `~/.claude/mcp.json` | Personal MCP servers |
+| Project | `<project>/.claude/mcp.json` | Project-specific servers |
 
-**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via Claude Mode. Those servers will be auto-injected into context, defeating the purpose.
+**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via Claude Mode—those will be auto-injected into context.
 
 ### Example Config
 
 ```json
 {
   "mcpServers": {
-    "context-repo": {
+    "my-server": {
       "type": "stdio",
       "command": "npx",
-      "args": ["-y", "context-repo-mcp"]
-    },
-    "my-api": {
-      "type": "http",
-      "url": "https://api.example.com/mcp",
-      "headers": {
-        "Authorization": "Bearer ${API_TOKEN}"
-      }
+      "args": ["-y", "my-mcp-server"]
     }
   }
 }
 ```
 
-### Migration from Claude Code
-
-If you have servers in `~/.claude.json` or `.mcp.json` that you want to access via Claude Mode:
-
-1. **Move** (don't copy) those server configs to `~/.claude/mcp.json`
-2. Remove them from Claude Code's configs
-3. This prevents duplicate schema injection
-
-```bash
-# Example: Create Claude Mode config directory
-mkdir -p ~/.claude
-
-# Move your server configs to the new location
-# (manually edit the files to move mcpServers entries)
-```
-
----
-
-## Progressive Disclosure Model
-
-| Level | Command | Purpose |
-|-------|---------|---------|
-| 1 | `cm servers` | Discover available MCP servers |
-| 2 | `cm index --server X` | List tools on a server |
-| 3 | `cm hydrate tool1 tool2 --server X` | Get full schemas |
-| 4 | `cm call tool --server X` | Execute tool directly |
-| 5 | `cm run --server X ...` | Execute workflow |
-
----
-
 ## Commands
 
-### `cm servers` - List available MCP servers
+| Command | Purpose |
+|---------|---------|
+| `cm servers` | List available MCP servers |
+| `cm index --server X` | List tools on a server |
+| `cm search "query" --server X` | Find tools by keyword |
+| `cm hydrate tool1 tool2 --server X` | Get full schemas |
+| `cm call tool --server X` | Execute tool directly |
+| `cm run --server X --tools a,b --workflow file.js` | Run multi-tool workflow |
+| `cm daemon start/stop/status` | Manage daemon for faster calls |
 
-```bash
-cm servers
-```
+## Documentation
 
-Shows all servers from `~/.claude/mcp.json` and `<project>/.claude/mcp.json`.
+Full documentation is in the skill directory after installation:
+- `.claude/skills/claude-mode/README.md` - Complete usage guide
+- `.claude/skills/claude-mode/SKILL.md` - Claude Code skill reference
 
-### `cm doctor` - Sanity check
+## Related
 
-```bash
-cm doctor --server contextrepo
-```
+- [Droid Mode](https://github.com/Gitmaxd/droid-mode) - The Factory.ai version this was ported from
 
-Checks: finds `mcp.json`, resolves server, attempts `initialize` + `tools/list`.
+## License
 
-### `cm index` - List tools (compact)
-
-```bash
-cm index --server contextrepo
-cm index --server contextrepo --json
-```
-
-Outputs a compact table (name + description + required params).
-
-### `cm search` - Find tools by keyword
-
-```bash
-cm search "semantic search over docs" --limit 8 --server contextrepo
-```
-
-Searches the cached index.
-
-### `cm hydrate` - Get full schemas
-
-```bash
-cm hydrate search_documents get_document --server contextrepo
-```
-
-Writes to `.claude/claude-mode/hydrated/<server>/<timestamp>/`:
-- `tools.json` - full tool definitions
-- `types.d.ts` - TypeScript types
-- `toolmap.json` - safe JS identifiers → tool names
-
-### `cm call` - Execute tool directly
-
-```bash
-cm call list_collections --server contextrepo
-cm call search_documents --server contextrepo --args '{"query": "hello", "limit": 5}'
-```
-
-This is the **primary method** for single tool calls. Uses daemon for faster execution.
-
-### `cm run` - Execute workflow
-
-```bash
-cm run --server contextrepo --tools search_documents,get_document --workflow workflow.js
-```
-
-Example workflow:
-
-```js
-workflow = async () => {
-  const docs = await t.searchDocuments({ query: "Claude Mode PRD", limit: 5 })
-  const full = await Promise.all(docs.results.map(d => t.getDocument({ id: d.id })))
-  return { count: full.length, ids: full.map(x => x.id) }
-}
-```
-
----
-
-## Output & Audit Artifacts
-
-All artifacts written to `.claude/claude-mode/`:
-
-| Path | Contents |
-|------|----------|
-| `cache/<server>/tools.json` | Cached tool inventory |
-| `hydrated/<server>/<ts>/` | Schema bundles |
-| `runs/<server>/<ts>/run.json` | Workflow result + trace |
-
----
-
-## Daemon Mode (Performance)
-
-The daemon maintains persistent MCP connections, reducing call latency by ~5x. Each project gets its own isolated daemon instance.
-
-### Commands
-
-```bash
-cm daemon start          # Start daemon for current project
-cm daemon stop           # Stop current project's daemon
-cm daemon status         # Check current project's daemon
-cm daemon status --all   # List ALL daemons across projects
-cm daemon list           # Alias for status --all
-cm daemon warm [server]  # Pre-warm connections
-```
-
-The daemon is optional - without it, everything works as before.
-
----
-
-## Key Differences from Droid Mode
-
-| Aspect | Droid Mode (Factory.ai) | Claude Mode (Claude Code) |
-|--------|------------------------|--------------------------|
-| User config | `~/.factory/mcp.json` | `~/.claude/mcp.json` |
-| Project config | `.factory/mcp.json` | `.claude/mcp.json` |
-| Data directory | `.factory/droid-mode/` | `.claude/claude-mode/` |
-| Daemon sockets | `~/.factory/run/` | `~/.cache/claude/run/` |
-| CLI command | `dm` | `cm` |
-| Env prefix | `DM_*` | `CM_*` |
-| Skill location | `.factory/skills/droid-mode/` | `.claude/skills/claude-mode/` |
-
----
-
-## Security Posture
-
-- Credentials remain in `mcp.json` env/headers, not in prompts
-- Workflow sandbox blocks `require`, `import`, `process`, `fetch`
-- Network access mediated through MCP server only
-- Every tool call traced (name, args hash, duration, error flag)
-
----
-
-## Environment Variables
-
-| Variable | Purpose |
-|----------|---------|
-| `CM_DEBUG` | Enable debug logging (set to "1") |
-| `CM_DAEMON_IDLE_MS` | Daemon idle timeout (default 600000ms) |
-| `CM_MCP_PROTOCOL_VERSION` | MCP protocol version override |
-| `CM_SOCKET_PATH` | Custom daemon socket path |
-| `CM_META_PATH` | Custom daemon metadata path |
-
----
-
-## Design Philosophy
-
-Treat MCP as infrastructure. Treat Skills as capability boundaries. Treat code as a reasoning amplifier - not as authority.
+MIT

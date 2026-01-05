@@ -1,38 +1,51 @@
 {
   "name": "claude-mode",
   "version": "0.1.0",
-  "description": "Progressive MCP integration for Claude Code. Access MCP tools without loading them into context.",
+  "description": "Progressive MCP integration for Claude Code - access MCP tools without context bloat",
   "type": "module",
+  "main": "dist/cli.js",
   "bin": {
-    "cm": "./bin/cm"
-  },
-  "exports": {
-    ".": "./lib/mcp_client.mjs",
-    "./lib/*": "./lib/*.mjs"
+    "claude-mode": "./dist/cli.js"
   },
   "files": [
-    "bin/",
-    "lib/",
-    "examples/",
-    "SKILL.md",
-    "README.md"
+    "dist",
+    "templates"
   ],
+  "scripts": {
+    "build": "tsup",
+    "dev": "tsup --watch",
+    "prepublishOnly": "npm run build",
+    "typecheck": "tsc --noEmit"
+  },
   "keywords": [
-    "claude",
+    "claude-mode",
     "claude-code",
     "mcp",
     "model-context-protocol",
-    "ai",
-    "llm",
-    "skill"
+    "cli",
+    "ai-agents",
+    "progressive-disclosure"
   ],
-  "author": "GitMaxd",
+  "author": {
+    "name": "GitMaxd",
+    "url": "https://github.com/Gitmaxd"
+  },
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "https://github.com/Gitmaxd/claude-mode.git"
+    "url": "git+https://github.com/Gitmaxd/claude-mode.git"
   },
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18"
+  },
+  "dependencies": {
+    "citty": "^0.1.6",
+    "fs-extra": "^11.3.3"
+  },
+  "devDependencies": {
+    "@types/fs-extra": "^11.0.4",
+    "@types/node": "^22.0.0",
+    "tsup": "^8.5.1",
+    "typescript": "^5.7.0"
   }
 }
