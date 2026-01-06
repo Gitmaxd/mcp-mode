@@ -1,6 +1,24 @@
+<div align="center">
+
+<!-- IMAGE PLACEHOLDER - Replace with your image URL -->
+<!-- <img src="YOUR_IMAGE_URL" alt="MCP Mode" width="600" /> -->
+
 # MCP Mode
 
-Progressive MCP integration for Claude Code. Access MCP tools **without loading them into context**.
+**Progressive MCP for Claude Code. Zero Token Tax.**
+
+[![npm version](https://img.shields.io/npm/v/mcp-mode.svg)](https://www.npmjs.com/package/mcp-mode)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+[![Node.js](https://img.shields.io/badge/Node.js-%3E%3D18-green.svg)](https://nodejs.org/)
+[![Status](https://img.shields.io/badge/Status-Experimental-orange.svg)](#experimental-status)
+
+Access MCP tools on-demand without loading schemas into your context window.
+
+[Quick Start](#quick-start) · [Commands](#command-reference) · [Configuration](#configuration) · [Troubleshooting](#troubleshooting)
+
+</div>
+
+---
 
 > **Note**: See [SECURITY.md](SECURITY.md) for known limitations and security considerations.
 
@@ -337,6 +355,16 @@ flowchart TB
 
 - [Droid Mode](https://github.com/Gitmaxd/droid-mode) - The Factory.ai version MCP Mode was ported from
 - [MCP Specification](https://modelcontextprotocol.io/) - The Model Context Protocol
+
+---
+
+## Experimental Status
+
+> **This is experimental software (v0.x)**
+>
+> MCP Mode is under active development. The API may change between versions.
+>
+> **Feedback welcome!** Open an issue on GitHub.
 
 ---
 
