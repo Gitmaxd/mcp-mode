@@ -16,24 +16,24 @@ Progressive MCP integration for Claude Code. Access MCP tools without loading th
 
 ### Option A - Personal skill (recommended)
 
-Copy this directory to `~/.claude/skills/claude-mode/`
+Copy this directory to `~/.claude/skills/mcp-mode/`
 
 ```bash
-~/.claude/skills/claude-mode/bin/cm --help
+~/.claude/skills/mcp-mode/bin/cm --help
 ```
 
 ### Option B - Project skill (for teams)
 
-Copy to `<repo>/.claude/skills/claude-mode/`
+Copy to `<repo>/.claude/skills/mcp-mode/`
 
 ```bash
-./.claude/skills/claude-mode/bin/cm --help
+./.claude/skills/mcp-mode/bin/cm --help
 ```
 
 ### Option C - npm (global install)
 
 ```bash
-npm install -g claude-mode
+npm install -g mcp-mode
 cm --help
 ```
 
@@ -142,7 +142,7 @@ Searches the cached index.
 cm hydrate search_documents get_document --server contextrepo
 ```
 
-Writes to `.claude/claude-mode/hydrated/<server>/<timestamp>/`:
+Writes to `.claude/mcp-mode/hydrated/<server>/<timestamp>/`:
 - `tools.json` - full tool definitions
 - `types.d.ts` - TypeScript types
 - `toolmap.json` - safe JS identifiers → tool names
@@ -176,7 +176,7 @@ workflow = async () => {
 
 ## Output & Audit Artifacts
 
-All artifacts written to `.claude/claude-mode/`:
+All artifacts written to `.claude/mcp-mode/`:
 
 | Path | Contents |
 |------|----------|
@@ -207,15 +207,15 @@ The daemon is optional - without it, everything works as before.
 
 ## Key Differences from Droid Mode
 
-| Aspect | Droid Mode (Factory.ai) | Claude Mode (Claude Code) |
+| Aspect | Droid Mode (Factory.ai) | MCP Mode (Claude Code) |
 |--------|------------------------|--------------------------|
 | User config | `~/.factory/mcp.json` | `~/.claude/mcp.json` |
 | Project config | `.factory/mcp.json` | `.claude/mcp.json` |
-| Data directory | `.factory/droid-mode/` | `.claude/claude-mode/` |
+| Data directory | `.factory/droid-mode/` | `.claude/mcp-mode/` |
 | Daemon sockets | `~/.factory/run/` | `~/.cache/claude/run/` |
 | CLI command | `dm` | `cm` |
 | Env prefix | `DM_*` | `CM_*` |
-| Skill location | `.factory/skills/droid-mode/` | `.claude/skills/claude-mode/` |
+| Skill location | `.factory/skills/droid-mode/` | `.claude/skills/mcp-mode/` |
 
 ---
 

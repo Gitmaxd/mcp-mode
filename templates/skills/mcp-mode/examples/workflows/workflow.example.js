@@ -1,5 +1,5 @@
 // Example Claude Mode workflow
-// This file is executed inside the claude-mode sandbox.
+// This file is executed inside the mcp-mode sandbox.
 // You have access to:
 //   - t.<safeToolName>(args): calls hydrated tools via MCP
 //   - tools.call(toolName, args): call by raw tool name

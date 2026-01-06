@@ -1,6 +1,6 @@
 import fs from "node:fs";
 import path from "node:path";
-import { getClaudeModeDataDir, ensureDir, readJsonFileIfExists, writeJson } from "./util.mjs";
+import { getMcpModeDataDir, ensureDir, readJsonFileIfExists, writeJson } from "./util.mjs";
 
 const STATE_FILE = "daemon-state.json";
 const STATE_VERSION = 1;
@@ -9,7 +9,7 @@ const STATE_VERSION = 1;
  * Get the path to the daemon state file.
  */
 export function getStateFilePath() {
-  return path.join(getClaudeModeDataDir(), STATE_FILE);
+  return path.join(getMcpModeDataDir(), STATE_FILE);
 }
 
 /**

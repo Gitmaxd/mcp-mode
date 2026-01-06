@@ -4,7 +4,7 @@ Claude Mode is intentionally implemented as a **Skill-first** integration.
 
 If you want to enforce a policy such as:
 
-- "Do not call raw `mcp__*` tools directly; use `claude-mode` scripts instead"
+- "Do not call raw `mcp__*` tools directly; use `mcp-mode` scripts instead"
 
 …you can add a hook and gate decisions there.
 

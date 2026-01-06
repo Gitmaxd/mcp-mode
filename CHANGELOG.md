@@ -22,7 +22,7 @@ MCP Mode is a port of [Droid Mode](https://github.com/Gitmaxd/droid-mode) to Cla
 |--------|-----------|-------------|
 | User config | `~/.factory/mcp.json` | `~/.claude/mcp.json` |
 | Project config | `.factory/mcp.json` | `.claude/mcp.json` |
-| Data directory | `.factory/droid-mode/` | `.claude/claude-mode/` |
+| Data directory | `.factory/droid-mode/` | `.claude/mcp-mode/` |
 | Daemon sockets | `~/.factory/run/` | `~/.cache/claude/run/` |
 | CLI command | `dm` | `cm` |
 | Env prefix | `DM_*` | `CM_*` |

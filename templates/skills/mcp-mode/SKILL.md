@@ -27,8 +27,8 @@ Access MCP tools **without loading them into context**. Progressive discovery â†
 
 **IMPORTANT**: The `cm` script must be called with full path. **Try workspace first**:
 
-1. **Workspace** (try first): `./.claude/skills/claude-mode/bin/cm`
-2. **Personal** (fallback): `~/.claude/skills/claude-mode/bin/cm`
+1. **Workspace** (try first): `./.claude/skills/mcp-mode/bin/cm`
+2. **Personal** (fallback): `~/.claude/skills/mcp-mode/bin/cm`
 
 If workspace path fails with "not found", use personal path.
 
@@ -124,10 +124,10 @@ workflow = async () => {
 
 ```bash
 # Workspace skill
-./.claude/skills/claude-mode/bin/cm run --server contextrepo --tools search_documents --workflow workflow.js
+./.claude/skills/mcp-mode/bin/cm run --server contextrepo --tools search_documents --workflow workflow.js
 
 # Personal skill
-~/.claude/skills/claude-mode/bin/cm run --server contextrepo --tools search_documents --workflow workflow.js
+~/.claude/skills/mcp-mode/bin/cm run --server contextrepo --tools search_documents --workflow workflow.js
 ```
 
 ## Verification
@@ -136,14 +136,14 @@ After using mcp-mode, verify (using full path to `cm` for your installation):
 
 ```bash
 # Workspace skill
-./.claude/skills/claude-mode/bin/cm doctor --server X
+./.claude/skills/mcp-mode/bin/cm doctor --server X
 
 # Personal skill
-~/.claude/skills/claude-mode/bin/cm doctor --server X
+~/.claude/skills/mcp-mode/bin/cm doctor --server X
 ```
 
 - [ ] `cm doctor --server X` passes (connection works)
-- [ ] Artifacts exist in `.claude/claude-mode/` (cache, hydrated, runs)
+- [ ] Artifacts exist in `.claude/mcp-mode/` (cache, hydrated, runs)
 - [ ] Workflow trace shows no errors (`runs/<server>/<ts>/run.json`)
 
 ## Proof Artifacts
@@ -161,14 +161,14 @@ The skill completes successfully when these artifacts exist:
 
 | Artifact | Path | Content |
 |----------|------|---------|
-| Tool cache | `.claude/claude-mode/cache/<server>/tools.json` | Array of tool objects |
-| Hydrated schemas | `.claude/claude-mode/hydrated/<server>/<ts>/schemas.json` | Full JSON schemas |
-| TypeScript types | `.claude/claude-mode/hydrated/<server>/<ts>/types.d.ts` | Generated type definitions |
-| Execution trace | `.claude/claude-mode/runs/<server>/<ts>/run.json` | `{ error: false, result: ... }` |
+| Tool cache | `.claude/mcp-mode/cache/<server>/tools.json` | Array of tool objects |
+| Hydrated schemas | `.claude/mcp-mode/hydrated/<server>/<ts>/schemas.json` | Full JSON schemas |
+| TypeScript types | `.claude/mcp-mode/hydrated/<server>/<ts>/types.d.ts` | Generated type definitions |
+| Execution trace | `.claude/mcp-mode/runs/<server>/<ts>/run.json` | `{ error: false, result: ... }` |
 
 Verify with the appropriate full path for your installation:
-- Workspace: `./.claude/skills/claude-mode/bin/cm doctor --server X`
-- Personal: `~/.claude/skills/claude-mode/bin/cm doctor --server X`
+- Workspace: `./.claude/skills/mcp-mode/bin/cm doctor --server X`
+- Personal: `~/.claude/skills/mcp-mode/bin/cm doctor --server X`
 
 Command should exit 0.
 
@@ -191,7 +191,7 @@ Command should exit 0.
 
 ## Artifacts
 
-All outputs written to `.claude/claude-mode/`:
+All outputs written to `.claude/mcp-mode/`:
 
 - `cache/<server>/tools.json`: tool inventory
 - `hydrated/<server>/<ts>/`: schemas + types
@@ -209,19 +209,19 @@ All JSON artifacts are machine-parseable for downstream skill chaining. Workflow
 
 ## Quick Reference
 
-**Find cm**: Always at `./.claude/skills/claude-mode/bin/cm` (workspace) or `~/.claude/skills/claude-mode/bin/cm` (personal)
+**Find cm**: Always at `./.claude/skills/mcp-mode/bin/cm` (workspace) or `~/.claude/skills/mcp-mode/bin/cm` (personal)
 
 **Minimal workflow** (using workspace path):
 ```bash
 # 1. Discover tools (snake_case names)
-./.claude/skills/claude-mode/bin/cm index --server X
+./.claude/skills/mcp-mode/bin/cm index --server X
 
 # 2. Hydrate (use snake_case)
-./.claude/skills/claude-mode/bin/cm hydrate tool_name --server X
+./.claude/skills/mcp-mode/bin/cm hydrate tool_name --server X
 
 # 3. Execute (use camelCase in workflow)
 echo 'workflow = async () => await t.toolName({})' > /tmp/wf.js
-./.claude/skills/claude-mode/bin/cm run --server X --tools tool_name --workflow /tmp/wf.js
+./.claude/skills/mcp-mode/bin/cm run --server X --tools tool_name --workflow /tmp/wf.js
 ```
 
 For personal skill, replace `./.claude/` with `~/.claude/`.
@@ -233,7 +233,7 @@ For personal skill, replace `./.claude/` with `~/.claude/`.
 For project-specific conventions, see:
 - `AGENTS.md`: project-wide agent guidance (if present)
 - `~/.claude/mcp.json` or `.claude/mcp.json`: MCP server configuration
-- `.claude/skills/*/SKILL.md`: related skills that may chain with mcp-mode
+- `.claude/skills/*/SKILL.md`: related skills that may chain with MCP Mode
 
 For mcp-mode internals:
 - `README.md`: full CLI documentation

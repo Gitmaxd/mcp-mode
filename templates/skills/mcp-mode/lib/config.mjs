@@ -101,7 +101,7 @@ export function loadMcpConfigs() {
       // Log warning but don't error - disabled flag has no effect in Claude Mode
       // since servers aren't auto-injected anyway
       process.stderr.write(
-        `[claude-mode] Server "${name}" has disabled:true - this flag is ignored ` +
+        `[mcp-mode] Server "${name}" has disabled:true - this flag is ignored ` +
         `(servers are only accessible via cm commands, never auto-injected)\n`
       );
       delete config.disabled;
@@ -132,7 +132,7 @@ export function loadMcpConfigs() {
 }
 
 /**
- * List all MCP servers available to claude-mode.
+ * List all MCP servers available to mcp-mode.
  * @returns {Array<{name: string, type: string, disabledInDroid: boolean}>}
  */
 export function listAllServers() {

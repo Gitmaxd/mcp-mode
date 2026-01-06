@@ -8,7 +8,7 @@ The skill uses `allowed-tools: Bash(*)` which grants broad bash access without p
 
 **Why**: The skill's core function requires running `cm` CLI commands.
 
-**Tradeoff**: A narrower scope like `Bash(./.claude/skills/claude-mode/bin/cm *)` would be more restrictive but may cause UX friction with path variations.
+**Tradeoff**: A narrower scope like `Bash(./.claude/skills/mcp-mode/bin/cm *)` would be more restrictive but may cause UX friction with path variations.
 
 **Status**: Accepted for v0.x. Will revisit for v1.0.
 

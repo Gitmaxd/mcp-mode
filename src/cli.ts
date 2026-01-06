@@ -80,8 +80,8 @@ const init = defineCommand({
   },
   async run({ args }) {
     const targetDir = resolve(args.path);
-    const skillDir = join(targetDir, '.claude', 'skills', 'claude-mode');
-    const templatesDir = resolve(__dirname, '..', 'templates', 'skills', 'claude-mode');
+    const skillDir = join(targetDir, '.claude', 'skills', 'mcp-mode');
+    const templatesDir = resolve(__dirname, '..', 'templates', 'skills', 'mcp-mode');
 
     console.log('\n🤖 MCP Mode Initializer\n');
 
@@ -93,7 +93,7 @@ const init = defineCommand({
 
     // Check if skill already exists
     if (await pathExists(skillDir) && !args.force) {
-      console.log('⚠️  .claude/skills/claude-mode already exists');
+      console.log('⚠️  .claude/skills/mcp-mode already exists');
       console.log('   Scaffolding new files only (existing files will NOT be overwritten)\n');
     }
 

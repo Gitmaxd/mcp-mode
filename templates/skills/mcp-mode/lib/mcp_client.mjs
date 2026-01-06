@@ -76,7 +76,7 @@ export class McpClient {
         elicitation: {},
       },
       clientInfo: {
-        name: "claude-mode",
+        name: "mcp-mode",
         title: "Claude Mode Skill",
         version: "0.1.0",
       },

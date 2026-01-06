@@ -1,7 +1,7 @@
 import fs from "node:fs";
 import path from "node:path";
 import vm from "node:vm";
-import { nowIsoCompact, sha256Hex, uniqueSafeToolMap, ensureDir, getClaudeModeDataDir, writeJson, serverNameToDirName } from "./util.mjs";
+import { nowIsoCompact, sha256Hex, uniqueSafeToolMap, ensureDir, getMcpModeDataDir, writeJson, serverNameToDirName } from "./util.mjs";
 
 /**
  * Static, best-effort disallow list for sandboxed workflows.
@@ -396,7 +396,7 @@ export async function executeWorkflow(opts) {
 
   // Create context with code generation from strings disabled where supported.
   const context = vm.createContext(sandbox, {
-    name: "claude-mode-workflow",
+    name: "mcp-mode-workflow",
     codeGeneration: { strings: false, wasm: false },
   });
 
@@ -426,7 +426,7 @@ export async function executeWorkflow(opts) {
 }
 
 /**
- * Persist a run artifact in the claude-mode data dir.
+ * Persist a run artifact in the mcp-mode data dir.
  * @param {{
  *   serverName: string,
  *   workflowPath: string,
@@ -436,7 +436,7 @@ export async function executeWorkflow(opts) {
  * }} opts
  */
 export function writeRunArtifact(opts) {
-  const dataDir = getClaudeModeDataDir();
+  const dataDir = getMcpModeDataDir();
   const ts = nowIsoCompact();
   const serverDir = serverNameToDirName(opts.serverName);
   const outDir = path.join(dataDir, "runs", serverDir, ts);

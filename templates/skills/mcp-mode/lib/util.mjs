@@ -183,13 +183,13 @@ export function findProjectRoot(startDir = process.cwd()) {
 
 /**
  * Returns the preferred working data dir:
- * - <project>/.claude/claude-mode when in a project
- * - ~/.claude/claude-mode otherwise
+ * - <project>/.claude/mcp-mode when in a project
+ * - ~/.claude/mcp-mode otherwise
  */
-export function getClaudeModeDataDir() {
+export function getMcpModeDataDir() {
   const root = findProjectRoot();
-  if (root) return path.join(root, ".claude", "claude-mode");
-  return path.join(os.homedir(), ".claude", "claude-mode");
+  if (root) return path.join(root, ".claude", "mcp-mode");
+  return path.join(os.homedir(), ".claude", "mcp-mode");
 }
 
 /**

@@ -1,5 +1,5 @@
 import path from "node:path";
-import { getClaudeModeDataDir, readJsonFileIfExists, writeJson, serverNameToDirName } from "./util.mjs";
+import { getMcpModeDataDir, readJsonFileIfExists, writeJson, serverNameToDirName } from "./util.mjs";
 
 const DEFAULT_MAX_PAGES = 100;
 const DEFAULT_MAX_TOOLS = 1000;
@@ -47,7 +47,7 @@ export async function fetchAllTools(client, opts = {}) {
  * }} opts
  */
 export async function getToolsCached(opts) {
-  const dataDir = getClaudeModeDataDir();
+  const dataDir = getMcpModeDataDir();
   const serverDir = serverNameToDirName(opts.serverName);
   const cacheFile = path.join(dataDir, "cache", serverDir, "tools.json");
   const maxAgeMs = typeof opts.maxAgeMs === "number" ? opts.maxAgeMs : 30 * 60 * 1000; // 30 minutes

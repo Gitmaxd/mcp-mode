@@ -54,7 +54,7 @@ Manual connection overrides (optional):
 Notes:
 - Claude Mode uses SEPARATE config files (~/.claude/mcp.json) from Claude Code's
   native configs (~/.claude.json, .mcp.json) to avoid context injection.
-- Tool inventory is cached under .claude/claude-mode/cache/<server>/tools.json
+- Tool inventory is cached under .claude/mcp-mode/cache/<server>/tools.json
 - When daemon is running, 'cm call' uses it automatically (~5x faster).
 `.trim();
 }
@@ -141,7 +141,7 @@ async function cmdServers(args) {
     ["name", "type"]
   );
 
-  process.stdout.write(`\n${servers.length} MCP server(s) available to claude-mode.\n`);
+  process.stdout.write(`\n${servers.length} MCP server(s) available to mcp-mode.\n`);
   process.stdout.write(`Tip: These servers are NOT in Claude Code's context - that's the point!\n`);
 }
 

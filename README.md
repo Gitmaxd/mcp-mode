@@ -51,7 +51,7 @@ npm install -g mcp-mode
 mcp-mode init
 ```
 
-This creates `.claude/skills/claude-mode/` with the skill files.
+This creates `.claude/skills/mcp-mode/` with the skill files.
 
 ---
 
@@ -63,13 +63,13 @@ If you already have MCP servers configured in Claude Desktop, import them instan
 
 ```bash
 # See what servers are available to import
-.claude/skills/claude-mode/bin/cm import --from desktop --dry-run
+.claude/skills/mcp-mode/bin/cm import --from desktop --dry-run
 
 # Import all your servers
-.claude/skills/claude-mode/bin/cm import --from desktop
+.claude/skills/mcp-mode/bin/cm import --from desktop
 
 # Import specific servers only
-.claude/skills/claude-mode/bin/cm import --from desktop firecrawl Tavily
+.claude/skills/mcp-mode/bin/cm import --from desktop firecrawl Tavily
 ```
 
 ### For New Users
@@ -92,8 +92,8 @@ If you already have MCP servers configured in Claude Desktop, import them instan
 2. Verify it works:
 
 ```bash
-.claude/skills/claude-mode/bin/cm servers
-.claude/skills/claude-mode/bin/cm doctor --server my-server
+.claude/skills/mcp-mode/bin/cm servers
+.claude/skills/mcp-mode/bin/cm doctor --server my-server
 ```
 
 ---
@@ -147,8 +147,8 @@ The skill translates your intent into the right `cm` commands automatically.
 ## Command Reference
 
 All commands use the `cm` CLI. Call with full path:
-- **Workspace**: `./.claude/skills/claude-mode/bin/cm`
-- **Personal**: `~/.claude/skills/claude-mode/bin/cm`
+- **Workspace**: `./.claude/skills/mcp-mode/bin/cm`
+- **Personal**: `~/.claude/skills/mcp-mode/bin/cm`
 
 ### Discovery Commands
 
@@ -308,7 +308,7 @@ cm run --server myserver --tools search_documents,get_document --workflow workfl
 
 ### Cache and Artifacts
 
-All MCP Mode data is stored in `.claude/claude-mode/`:
+All MCP Mode data is stored in `.claude/mcp-mode/`:
 
 | Path | Content |
 |------|---------|
@@ -322,8 +322,8 @@ All MCP Mode data is stored in `.claude/claude-mode/`:
 
 | Issue | Solution |
 |-------|----------|
-| `command not found: cm` | Use full path: `./.claude/skills/claude-mode/bin/cm` |
-| `Permission denied` | Run `chmod +x .claude/skills/claude-mode/bin/cm` |
+| `command not found: cm` | Use full path: `./.claude/skills/mcp-mode/bin/cm` |
+| `Permission denied` | Run `chmod +x .claude/skills/mcp-mode/bin/cm` |
 | `Server not found` | Check `cm servers` and verify `~/.claude/mcp.json` exists |
 | `Connection timeout` | Run `cm doctor --server X` to diagnose |
 | `Tool not found` | Run `cm index --server X --refresh` to refresh cache |
