@@ -54,16 +54,16 @@ function checkClaudeCodeConfigOverlap(serverName) {
 }
 
 /**
- * Read project and user mcp.json from Claude Mode's dedicated config paths.
+ * Read project and user mcp.json from MCP Mode's dedicated config paths.
  * 
- * IMPORTANT: Claude Mode uses SEPARATE config files from Claude Code to avoid
+ * IMPORTANT: MCP Mode uses SEPARATE config files from Claude Code to avoid
  * context injection. Servers in Claude Code's configs (~/.claude.json, .mcp.json)
- * are auto-injected into context at startup. Claude Mode's configs are invisible
+ * are auto-injected into context at startup. MCP Mode's configs are invisible
  * to Claude Code.
  * 
  * Config paths:
- * - User: ~/.claude/mcp.json (Claude Mode's own config)
- * - Project: <project>/.claude/mcp.json (Claude Mode's own config)
+ * - User: ~/.claude/mcp.json (MCP Mode's own config)
+ * - Project: <project>/.claude/mcp.json (MCP Mode's own config)
  * 
  * Merge rules: Project servers override User servers with the same name.
  * Results are cached and invalidated when file mtimes change.
@@ -82,7 +82,7 @@ export function loadMcpConfigs() {
   }
 
   const projectRoot = findProjectRoot();
-  // Claude Mode's dedicated config paths (NOT Claude Code's configs!)
+  // MCP Mode's dedicated config paths (NOT Claude Code's configs!)
   const projectPath = projectRoot ? path.join(projectRoot, ".claude", "mcp.json") : null;
   const userPath = path.join(os.homedir(), ".claude", "mcp.json");
 
@@ -98,7 +98,7 @@ export function loadMcpConfigs() {
   // Handle disabled flag gracefully and check for Claude Code config overlap
   for (const [name, config] of Object.entries(merged)) {
     if (config.disabled) {
-      // Log warning but don't error - disabled flag has no effect in Claude Mode
+      // Log warning but don't error - disabled flag has no effect in MCP Mode
       // since servers aren't auto-injected anyway
       process.stderr.write(
         `[mcp-mode] Server "${name}" has disabled:true - this flag is ignored ` +
@@ -140,7 +140,7 @@ export function listAllServers() {
   return Object.entries(mergedServers || {}).map(([name, entry]) => ({
     name,
     type: entry?.type || "unknown",
-    disabledInDroid: false, // Always false in Claude Mode (concept doesn't apply)
+    disabledInDroid: false, // Always false in MCP Mode (concept doesn't apply)
   }));
 }
 
@@ -247,7 +247,7 @@ export function readClaudeDesktopConfig() {
 }
 
 /**
- * Get the path to Claude Mode's user-level config file.
+ * Get the path to MCP Mode's user-level config file.
  * @returns {string}
  */
 export function getUserConfigPath() {
@@ -255,7 +255,7 @@ export function getUserConfigPath() {
 }
 
 /**
- * Get the path to Claude Mode's project-level config file.
+ * Get the path to MCP Mode's project-level config file.
  * @returns {string}
  * @throws {Error} if no project root found
  */

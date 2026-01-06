@@ -77,7 +77,7 @@ export class McpClient {
       },
       clientInfo: {
         name: "mcp-mode",
-        title: "Claude Mode Skill",
+        title: "MCP Mode Skill",
         version: "0.1.0",
       },
     };

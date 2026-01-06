@@ -1,4 +1,4 @@
-# Claude Mode
+# MCP Mode
 
 Progressive MCP integration for Claude Code. Access MCP tools without loading them into context.
 
@@ -6,7 +6,7 @@ Progressive MCP integration for Claude Code. Access MCP tools without loading th
 
 > **The Problem:** MCP tool schemas are loaded into Claude Code's context window at session startup, consuming 30-50%+ of available tokens BEFORE any conversation begins. Real-world reports show 66,000+ tokens consumed at startup (33% of 200k context).
 >
-> **The Solution:** Claude Mode bypasses this entirely by using separate config files (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
+> **The Solution:** MCP Mode bypasses this entirely by using separate config files (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
 >
 > **Result:** Near-zero startup token cost, full context available for actual work.
 
@@ -41,14 +41,14 @@ cm --help
 
 ## MCP Server Configuration
 
-**CRITICAL:** Claude Mode uses **SEPARATE** config files from Claude Code's native configs to avoid context injection.
+**CRITICAL:** MCP Mode uses **SEPARATE** config files from Claude Code's native configs to avoid context injection.
 
 | Config | Path | Purpose |
 |--------|------|---------|
-| User config | `~/.claude/mcp.json` | Personal MCP servers for Claude Mode |
+| User config | `~/.claude/mcp.json` | Personal MCP servers for MCP Mode |
 | Project config | `<project>/.claude/mcp.json` | Project-specific MCP servers |
 
-**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via Claude Mode. Those servers will be auto-injected into context, defeating the purpose.
+**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via MCP Mode. Those servers will be auto-injected into context, defeating the purpose.
 
 ### Example Config
 
@@ -73,14 +73,14 @@ cm --help
 
 ### Migration from Claude Code
 
-If you have servers in `~/.claude.json` or `.mcp.json` that you want to access via Claude Mode:
+If you have servers in `~/.claude.json` or `.mcp.json` that you want to access via MCP Mode:
 
 1. **Move** (don't copy) those server configs to `~/.claude/mcp.json`
 2. Remove them from Claude Code's configs
 3. This prevents duplicate schema injection
 
 ```bash
-# Example: Create Claude Mode config directory
+# Example: Create MCP Mode config directory
 mkdir -p ~/.claude
 
 # Move your server configs to the new location
@@ -166,7 +166,7 @@ Example workflow:
 
 ```js
 workflow = async () => {
-  const docs = await t.searchDocuments({ query: "Claude Mode PRD", limit: 5 })
+  const docs = await t.searchDocuments({ query: "MCP Mode PRD", limit: 5 })
   const full = await Promise.all(docs.results.map(d => t.getDocument({ id: d.id })))
   return { count: full.length, ids: full.map(x => x.id) }
 }

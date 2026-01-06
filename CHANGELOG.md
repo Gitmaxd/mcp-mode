@@ -18,7 +18,7 @@ MCP Mode is a port of [Droid Mode](https://github.com/Gitmaxd/droid-mode) to Cla
 
 ### Platform Differences from Droid Mode
 
-| Aspect | Droid Mode | Claude Mode |
+| Aspect | Droid Mode | MCP Mode |
 |--------|-----------|-------------|
 | User config | `~/.factory/mcp.json` | `~/.claude/mcp.json` |
 | Project config | `.factory/mcp.json` | `.claude/mcp.json` |

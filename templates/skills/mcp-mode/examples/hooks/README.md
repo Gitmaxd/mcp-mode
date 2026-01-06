@@ -1,6 +1,6 @@
 # Hooks (optional)
 
-Claude Mode is intentionally implemented as a **Skill-first** integration.
+MCP Mode is intentionally implemented as a **Skill-first** integration.
 
 If you want to enforce a policy such as:
 

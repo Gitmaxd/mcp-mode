@@ -13,7 +13,7 @@ import { setServerAutoWarm, getServerState } from "../lib/state.mjs";
 
 function usage() {
   return `
-Claude Mode (cm) - Progressive MCP workflows for Claude Code
+MCP Mode (cm) - Progressive MCP workflows for Claude Code
 
 Usage:
   cm servers [--json]
@@ -52,7 +52,7 @@ Manual connection overrides (optional):
   --stdio-command <cmd> [--stdio-args "a,b,c"] [--env-json '{"KEY":"VALUE"}']
 
 Notes:
-- Claude Mode uses SEPARATE config files (~/.claude/mcp.json) from Claude Code's
+- MCP Mode uses SEPARATE config files (~/.claude/mcp.json) from Claude Code's
   native configs (~/.claude.json, .mcp.json) to avoid context injection.
 - Tool inventory is cached under .claude/mcp-mode/cache/<server>/tools.json
 - When daemon is running, 'cm call' uses it automatically (~5x faster).
@@ -692,7 +692,7 @@ async function cmdImport(args) {
     fail(err.message);
   }
 
-  // Transform to Claude Mode format (add type field)
+  // Transform to MCP Mode format (add type field)
   const transformed = {};
   for (const [name, config] of Object.entries(toImport)) {
     if (config.command) {
