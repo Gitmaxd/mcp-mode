@@ -1,8 +1,8 @@
 #!/usr/bin/env node
 import fs from "node:fs";
 
-import { parseArgs, printTable, listAllDaemons } from "../lib/util.mjs";
-import { loadMcpConfigs, resolveServer, summarizeServerForDisplay, listAllServers } from "../lib/config.mjs";
+import { parseArgs, printTable, listAllDaemons, readJsonFileIfExists, writeJson, ensureDir } from "../lib/util.mjs";
+import { loadMcpConfigs, resolveServer, summarizeServerForDisplay, listAllServers, readClaudeDesktopConfig, getUserConfigPath, getProjectConfigPath } from "../lib/config.mjs";
 import { McpClient } from "../lib/mcp_client.mjs";
 import { getToolsCached, compactToolSummaries } from "../lib/tool_index.mjs";
 import { searchTools } from "../lib/search.mjs";
@@ -34,6 +34,11 @@ Daemon (persistent connections for faster calls):
 
 Configuration:
   cm config <server> autoWarm true|false  → Enable/disable auto-warm for server
+
+Import from Claude Desktop (macOS):
+  cm import --from desktop [--dry-run]           → Import all servers from Claude Desktop
+  cm import --from desktop server1 server2       → Import specific servers
+  cm import --from desktop --scope project       → Import to project config instead of user
 
 Progressive Disclosure Flow:
   1. cm servers              → Discover available MCP servers
@@ -609,6 +614,123 @@ async function cmdConfig(args) {
   fail(`Unknown config key: ${key}\nSupported: autoWarm`);
 }
 
+async function cmdImport(args) {
+  const from = args.flags.from;
+  if (!from) {
+    fail("Missing --from flag.\n\nUsage: cm import --from desktop [server1 server2 ...] [--dry-run] [--scope user|project]");
+  }
+  if (from !== "desktop") {
+    fail("Currently only --from desktop is supported.");
+  }
+
+  const serverNames = args._.slice(1); // Optional: specific servers
+  const dryRun = !!args.flags["dry-run"];
+  const scope = args.flags.scope || "user"; // user or project
+
+  if (scope !== "user" && scope !== "project") {
+    fail("--scope must be 'user' or 'project'");
+  }
+
+  // Read Claude Desktop config
+  const desktopConfig = readClaudeDesktopConfig();
+  if (!desktopConfig) {
+    fail(
+      "Claude Desktop config not found.\n" +
+      "Expected: ~/Library/Application Support/Claude/claude_desktop_config.json\n" +
+      "(This feature requires Claude Desktop to be installed on macOS)"
+    );
+  }
+
+  const allServers = desktopConfig.mcpServers || {};
+  if (!Object.keys(allServers).length) {
+    fail("No MCP servers found in Claude Desktop config.");
+  }
+
+  // Filter servers if names specified
+  let toImport;
+  if (serverNames.length > 0) {
+    toImport = {};
+    const notFound = [];
+    for (const name of serverNames) {
+      if (allServers[name]) {
+        toImport[name] = allServers[name];
+      } else {
+        notFound.push(name);
+      }
+    }
+    if (notFound.length) {
+      fail(
+        `Server(s) not found in Claude Desktop config: ${notFound.join(", ")}\n` +
+        `Available: ${Object.keys(allServers).join(", ")}`
+      );
+    }
+  } else {
+    toImport = allServers;
+  }
+
+  // Dry run: just display
+  if (dryRun) {
+    process.stdout.write("Servers that would be imported from Claude Desktop:\n\n");
+    printTable(
+      Object.entries(toImport).map(([name, config]) => ({
+        name,
+        type: config.command ? "stdio" : (config.url ? "http" : "unknown"),
+        command: config.command || config.url || "-",
+      })),
+      ["name", "type", "command"]
+    );
+    process.stdout.write(`\n${Object.keys(toImport).length} server(s) would be imported.\n`);
+    process.stdout.write("Run without --dry-run to import.\n");
+    return;
+  }
+
+  // Get target path
+  let targetPath;
+  try {
+    targetPath = scope === "project" ? getProjectConfigPath() : getUserConfigPath();
+  } catch (err) {
+    fail(err.message);
+  }
+
+  // Transform to Claude Mode format (add type field)
+  const transformed = {};
+  for (const [name, config] of Object.entries(toImport)) {
+    if (config.command) {
+      transformed[name] = {
+        type: "stdio",
+        command: config.command,
+        args: config.args || [],
+        env: config.env || {},
+      };
+    } else if (config.url) {
+      transformed[name] = {
+        type: "http",
+        url: config.url,
+        headers: config.headers || {},
+      };
+    } else {
+      // Unknown format, copy as-is
+      transformed[name] = { ...config };
+    }
+  }
+
+  // Read existing config and merge
+  const existing = readJsonFileIfExists(targetPath) || { mcpServers: {} };
+  const merged = {
+    ...existing,
+    mcpServers: { ...existing.mcpServers, ...transformed },
+  };
+
+  // Ensure directory exists and write
+  const dir = targetPath.substring(0, targetPath.lastIndexOf("/"));
+  ensureDir(dir);
+  writeJson(targetPath, merged);
+
+  process.stdout.write(`Imported ${Object.keys(toImport).length} server(s) to ${targetPath}\n`);
+  process.stdout.write(`Servers: ${Object.keys(toImport).join(", ")}\n`);
+  process.stdout.write("\nRun 'cm servers' to verify.\n");
+}
+
 async function main() {
   const args = parseArgs(process.argv.slice(2));
   const cmd = args._[0];
@@ -628,6 +750,7 @@ async function main() {
     if (cmd === "call") return await cmdCall(args);
     if (cmd === "daemon") return await cmdDaemon(args);
     if (cmd === "config") return await cmdConfig(args);
+    if (cmd === "import") return await cmdImport(args);
     fail(`Unknown command: ${cmd}\n\n${usage()}`);
   } catch (err) {
     fail(err.message || err);

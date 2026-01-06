@@ -1,6 +1,8 @@
-# Claude Mode
+# MCP Mode
 
 Progressive MCP integration for Claude Code. Access MCP tools **without loading them into context**.
+
+> **Note**: See [SECURITY.md](SECURITY.md) for known limitations and security considerations.
 
 ## The Problem
 
@@ -8,7 +10,7 @@ MCP tool schemas are loaded into Claude Code's context window at session startup
 
 ## The Solution
 
-Claude Mode bypasses this entirely by using **separate config files** (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
+MCP Mode bypasses this entirely by using **separate config files** (`~/.claude/mcp.json`) that Claude Code doesn't see. Servers are connected on-demand via CLI, schemas loaded only when needed, and tool calls executed outside the context window.
 
 **Result:** Near-zero startup token cost, full context available for actual work.
 
@@ -16,11 +18,11 @@ Claude Mode bypasses this entirely by using **separate config files** (`~/.claud
 
 ```bash
 # Initialize in your project
-npx claude-mode init
+npx mcp-mode init
 
 # Or install globally
-npm install -g claude-mode
-claude-mode init
+npm install -g mcp-mode
+mcp-mode init
 ```
 
 This creates `.claude/skills/claude-mode/` with the skill files.
@@ -43,14 +45,14 @@ This creates `.claude/skills/claude-mode/` with the skill files.
 
 ## Configuration
 
-**CRITICAL:** Claude Mode uses **SEPARATE** config files from Claude Code's native configs.
+**CRITICAL:** MCP Mode uses **SEPARATE** config files from Claude Code's native configs.
 
 | Config | Path | Purpose |
 |--------|------|---------|
 | User | `~/.claude/mcp.json` | Personal MCP servers |
 | Project | `<project>/.claude/mcp.json` | Project-specific servers |
 
-**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via Claude Mode—those will be auto-injected into context.
+**DO NOT** use Claude Code's native configs (`~/.claude.json`, `.mcp.json`) for servers you want to access via MCP Mode—those will be auto-injected into context.
 
 ### Example Config
 
@@ -86,7 +88,7 @@ Full documentation is in the skill directory after installation:
 
 ## Related
 
-- [Droid Mode](https://github.com/Gitmaxd/droid-mode) - The Factory.ai version this was ported from
+- [Droid Mode](https://github.com/Gitmaxd/droid-mode) - The Factory.ai version MCP Mode was ported from
 
 ## License
 

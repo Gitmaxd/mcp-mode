@@ -1,11 +1,11 @@
 {
-  "name": "claude-mode",
+  "name": "mcp-mode",
   "version": "0.1.0",
   "description": "Progressive MCP integration for Claude Code - access MCP tools without context bloat",
   "type": "module",
   "main": "dist/cli.js",
   "bin": {
-    "claude-mode": "./dist/cli.js"
+    "mcp-mode": "./dist/cli.js"
   },
   "files": [
     "dist",
@@ -18,7 +18,7 @@
     "typecheck": "tsc --noEmit"
   },
   "keywords": [
-    "claude-mode",
+    "mcp-mode",
     "claude-code",
     "mcp",
     "model-context-protocol",
@@ -33,7 +33,15 @@
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/Gitmaxd/claude-mode.git"
+    "url": "git+https://github.com/Gitmaxd/mcp-mode.git"
+  },
+  "homepage": "https://mcpmode.com",
+  "bugs": {
+    "url": "https://github.com/Gitmaxd/mcp-mode/issues"
+  },
+  "publishConfig": {
+    "access": "public",
+    "provenance": true
   },
   "engines": {
     "node": ">=18"

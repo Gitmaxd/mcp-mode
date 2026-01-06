@@ -1,10 +1,10 @@
 ---
-name: claude-mode
+name: mcp-mode
 description: Progressive MCP integration for Claude Code. Discover tools incrementally, hydrate schemas on demand, and run procedural workflows that call MCP tools outside the LLM loop.
 allowed-tools: Bash(*)
 ---
 
-# Claude Mode
+# MCP Mode
 
 Access MCP tools **without loading them into context**. Progressive discovery → schema hydration → procedural execution.
 
@@ -46,17 +46,17 @@ All commands accept `--server <name>`. If only one server exists, it's auto-sele
 
 ## Key Insight
 
-Claude Mode uses **separate config files** (`~/.claude/mcp.json`) from Claude Code's native configs (`~/.claude.json`, `.mcp.json`). This is critical:
+MCP Mode uses **separate config files** (`~/.claude/mcp.json`) from Claude Code's native configs (`~/.claude.json`, `.mcp.json`). This is critical:
 
 - Servers in Claude Code's configs are **auto-injected** into context at startup (consuming tokens)
-- Servers in Claude Mode's configs are **invisible** to Claude Code (no injection)
+- Servers in MCP Mode's configs are **invisible** to Claude Code (no injection)
 - `cm` connects to them on-demand via CLI
 
-This is the **entire point** of Claude Mode: access MCP servers without context bloat.
+This is the **entire point** of MCP Mode: access MCP servers without context bloat.
 
 ## Idempotency
 
-All claude-mode commands are safe to rerun:
+All mcp-mode commands are safe to rerun:
 - `cm servers` / `cm index`: read-only discovery
 - `cm hydrate`: overwrites previous hydration (timestamped)
 - `cm run`: each run creates a new timestamped trace
@@ -132,7 +132,7 @@ workflow = async () => {
 
 ## Verification
 
-After using claude-mode, verify (using full path to `cm` for your installation):
+After using mcp-mode, verify (using full path to `cm` for your installation):
 
 ```bash
 # Workspace skill
@@ -233,8 +233,8 @@ For personal skill, replace `./.claude/` with `~/.claude/`.
 For project-specific conventions, see:
 - `AGENTS.md`: project-wide agent guidance (if present)
 - `~/.claude/mcp.json` or `.claude/mcp.json`: MCP server configuration
-- `.claude/skills/*/SKILL.md`: related skills that may chain with claude-mode
+- `.claude/skills/*/SKILL.md`: related skills that may chain with mcp-mode
 
-For claude-mode internals:
+For mcp-mode internals:
 - `README.md`: full CLI documentation
 - `examples/`: sample workflows and hooks

@@ -227,3 +227,42 @@ export function summarizeServerForDisplay(entry) {
   }
   return { type: type || "unknown" };
 }
+
+/**
+ * Read Claude Desktop's MCP configuration file.
+ * This is the "master" config that Claude Desktop uses, located at:
+ * ~/Library/Application Support/Claude/claude_desktop_config.json (macOS)
+ * 
+ * @returns {any|null} The parsed config or null if not found
+ */
+export function readClaudeDesktopConfig() {
+  const desktopPath = path.join(
+    os.homedir(),
+    "Library",
+    "Application Support",
+    "Claude",
+    "claude_desktop_config.json"
+  );
+  return readJsonFileIfExists(desktopPath);
+}
+
+/**
+ * Get the path to Claude Mode's user-level config file.
+ * @returns {string}
+ */
+export function getUserConfigPath() {
+  return path.join(os.homedir(), ".claude", "mcp.json");
+}
+
+/**
+ * Get the path to Claude Mode's project-level config file.
+ * @returns {string}
+ * @throws {Error} if no project root found
+ */
+export function getProjectConfigPath() {
+  const root = findProjectRoot();
+  if (!root) {
+    throw new Error("No project root found (no .claude directory)");
+  }
+  return path.join(root, ".claude", "mcp.json");
+}

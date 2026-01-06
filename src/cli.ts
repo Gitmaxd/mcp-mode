@@ -6,13 +6,13 @@ import { stat, readFile } from 'fs/promises';
 
 const __dirname = dirname(fileURLToPath(import.meta.url));
 
-const CLAUDE_MODE_ASCII = `
-   ██████╗██╗      █████╗ ██╗   ██╗██████╗ ███████╗    ███╗   ███╗ ██████╗ ██████╗ ███████╗
-  ██╔════╝██║     ██╔══██╗██║   ██║██╔══██╗██╔════╝    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝
-  ██║     ██║     ███████║██║   ██║██║  ██║█████╗      ██╔████╔██║██║   ██║██║  ██║█████╗
-  ██║     ██║     ██╔══██║██║   ██║██║  ██║██╔══╝      ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝
-  ╚██████╗███████╗██║  ██║╚██████╔╝██████╔╝███████╗    ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗
-   ╚═════╝╚══════╝╚═╝  ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝    ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝`;
+const MCP_MODE_ASCII = `
+  ███╗   ███╗ ██████╗██████╗     ███╗   ███╗ ██████╗ ██████╗ ███████╗
+  ████╗ ████║██╔════╝██╔══██╗    ████╗ ████║██╔═══██╗██╔══██╗██╔════╝
+  ██╔████╔██║██║     ██████╔╝    ██╔████╔██║██║   ██║██║  ██║█████╗
+  ██║╚██╔╝██║██║     ██╔═══╝     ██║╚██╔╝██║██║   ██║██║  ██║██╔══╝
+  ██║ ╚═╝ ██║╚██████╗██║         ██║ ╚═╝ ██║╚██████╔╝██████╔╝███████╗
+  ╚═╝     ╚═╝ ╚═════╝╚═╝         ╚═╝     ╚═╝ ╚═════╝ ╚═════╝ ╚══════╝`;
 
 const DIVIDER = '────────────────────────────────────────────────────────────────────────────────';
 const DIVIDER_THIN = '────────────────────────────────────────────────────────────';
@@ -30,9 +30,9 @@ async function getPackageVersion(): Promise<string> {
 
 function printSuccessScreen(copied: number, skipped: number, version: string): void {
   console.log(`\n${DIVIDER}\n`);
-  console.log(CLAUDE_MODE_ASCII);
-  console.log(`${''.padStart(72)}v${version}\n`);
-  console.log('                     Progressive MCP for Claude Code\n');
+  console.log(MCP_MODE_ASCII);
+  console.log(`${''.padStart(56)}v${version}\n`);
+  console.log('                   Progressive MCP for Claude Code\n');
   console.log(DIVIDER);
 
   const status = skipped > 0
@@ -49,14 +49,14 @@ function printSuccessScreen(copied: number, skipped: number, version: string): v
   console.log(DIVIDER_THIN);
 
   console.log('\n  ⚡ KEY INSIGHT\n');
-  console.log('  Claude Mode uses SEPARATE config files (~/.claude/mcp.json)');
+  console.log('  MCP Mode uses SEPARATE config files (~/.claude/mcp.json)');
   console.log('  from Claude Code\'s native configs. This prevents MCP schemas');
   console.log('  from being auto-injected into context at startup.\n');
   console.log(DIVIDER_THIN);
 
   console.log('\n  RESOURCES\n');
-  console.log('  📦 NPM       https://npmjs.com/package/claude-mode');
-  console.log('  🐙 GitHub    https://github.com/Gitmaxd/claude-mode\n');
+  console.log('  📦 NPM       https://npmjs.com/package/mcp-mode');
+  console.log('  🐙 GitHub    https://github.com/Gitmaxd/mcp-mode\n');
   console.log(DIVIDER);
   console.log('');
 }
@@ -64,7 +64,7 @@ function printSuccessScreen(copied: number, skipped: number, version: string): v
 const init = defineCommand({
   meta: {
     name: 'init',
-    description: 'Initialize Claude Mode skill in your project',
+    description: 'Initialize MCP Mode skill in your project',
   },
   args: {
     force: {
@@ -83,7 +83,7 @@ const init = defineCommand({
     const skillDir = join(targetDir, '.claude', 'skills', 'claude-mode');
     const templatesDir = resolve(__dirname, '..', 'templates', 'skills', 'claude-mode');
 
-    console.log('\n🤖 Claude Mode Initializer\n');
+    console.log('\n🤖 MCP Mode Initializer\n');
 
     // Check if templates exist
     if (!(await pathExists(templatesDir))) {
@@ -143,7 +143,7 @@ const init = defineCommand({
 
 const main = defineCommand({
   meta: {
-    name: 'claude-mode',
+    name: 'mcp-mode',
     version: '0.1.0',
     description: 'Progressive MCP integration for Claude Code',
   },
@@ -152,10 +152,10 @@ const main = defineCommand({
   },
   async run() {
     const version = await getPackageVersion();
-    console.log(`\n🤖 Claude Mode v${version}\n`);
-    console.log('Usage:  npx claude-mode init [--path <dir>]\n');
+    console.log(`\n🤖 MCP Mode v${version}\n`);
+    console.log('Usage:  npx mcp-mode init [--path <dir>]\n');
     console.log('Scaffold MCP integration for Claude Code.');
-    console.log('Learn more: https://github.com/Gitmaxd/claude-mode\n');
+    console.log('Learn more: https://github.com/Gitmaxd/mcp-mode\n');
   },
 });
 

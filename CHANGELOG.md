@@ -1,12 +1,12 @@
 # Changelog
 
-All notable changes to Claude Mode will be documented in this file.
+All notable changes to MCP Mode will be documented in this file.
 
 ## [0.1.0] - 2026-01-05
 
 ### Initial Release
 
-Claude Mode is a port of [Droid Mode](https://github.com/Gitmaxd/droid-mode) to Claude Code.
+MCP Mode is a port of [Droid Mode](https://github.com/Gitmaxd/droid-mode) to Claude Code.
 
 ### Key Features
 
@@ -29,11 +29,11 @@ Claude Mode is a port of [Droid Mode](https://github.com/Gitmaxd/droid-mode) to 
 
 ### Why Separate Config Files?
 
-Claude Mode uses `~/.claude/mcp.json` (NOT `~/.claude.json`) because:
+MCP Mode uses `~/.claude/mcp.json` (NOT `~/.claude.json`) because:
 
 1. Servers in Claude Code's native configs are auto-injected into context at startup
 2. This injection consumes 30-100k+ tokens before any conversation
 3. Separate config files keep servers invisible to Claude Code
 4. `cm` connects to them on-demand, avoiding context bloat
 
-This is the **core value proposition** of Claude Mode.
+This is the **core value proposition** of MCP Mode.
